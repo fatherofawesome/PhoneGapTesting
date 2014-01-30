@@ -15,8 +15,9 @@ function onDeviceReady() {
 	cameraApp = new cameraApp();
 	cameraApp.run();
 
+	console.log("Before - Database Opened/Created");
 	database = window.openDatabase("GAA_Database", 2, "GAA_Database", 10000000);
-	console.log("Database Opened/Created");
+	console.log("After - Database Opened/Created");
 
 	database.transaction(createTables, dbErrorHandler, getEntries);
 	console.log("Database Transaction Initiated");
