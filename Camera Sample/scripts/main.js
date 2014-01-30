@@ -1,4 +1,5 @@
 
+var database;
 
 document.addEventListener("deviceready", onDeviceReady, false);
  
@@ -6,9 +7,33 @@ function id(element) {
     return document.getElementById(element);
 }
 
+function dbErrorHandler(err) {
+    alert("DB Error: " + err.message + "\nCode=" + err.code);
+}
+
 function onDeviceReady() {
 	cameraApp = new cameraApp();
-    cameraApp.run();
+	cameraApp.run();
+
+	database = window.openDatabase("GAA_Database", 2, "GAA_Database", 10000000);
+	console.log("Database Opened/Created");
+
+	database.transaction(createTables, dbErrorHandler, getEntries);
+	console.log("Database Transaction Initiated");
+}
+
+function createTables(tx) {
+    tx.executeSql("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY,first,last,dob)");
+}
+
+function getEntries() {
+    dbShell.transaction(function (tx) {
+        tx.executeSql("select id, first, last, dob from notes order by id desc", [], renderEntries, dbErrorHandler);
+    }, dbErrorHandler);
+}
+
+function renderEntries(tx, results) {
+    console.log("attempting to render entries");
 }
 
 function cameraApp(){}
