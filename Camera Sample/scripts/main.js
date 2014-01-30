@@ -11,8 +11,6 @@ function onDeviceReady() {
     cameraApp.run();
 }
 
-
-
 function cameraApp(){}
 
 cameraApp.prototype={
